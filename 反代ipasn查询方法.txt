@@ -1,0 +1,320 @@
+906 → DMIT
+
+54574 → DMIT
+
+3214 → xTom (V.PS)
+
+134520 → GigsGigsCloud
+
+400464 → VMISS
+
+55933 → Cloudie
+
+46844 → Sharktech
+
+54600 → Peg Tech
+
+212083 → Evoxt
+
+151964 → WePC
+
+140869 → DotdotNetwork
+
+209554 → ISIF
+
+140096 → Jinx (花卷)
+
+133441 → EdgeNat
+
+216001 → Faconhost
+
+9848 → 荫云 (Yin-Net)
+
+40676 → Psychz Networks
+
+7586 → CubeCloud (魔方云)
+
+8097 → OneTechCloud (易科云)
+
+20081 → HOSTHONGKONG.NET
+
+45748 → Pia云
+
+46829 → Lamhosting
+
+51847 → Nearoute / Nube
+
+64270 → PacificRack
+
+11161 → DigitalVirt
+
+8796 → ZgoVPS
+
+137990 → ByteVirt
+
+139803 → edgeNAT
+
+140224 → RAKsmart
+
+149440 → Evoxt (马来西亚)
+
+152194 → CTGServer
+
+201106 → SpartanHost (斯巴达)
+
+211252 → DesiVPS
+
+394302 → LayerStack
+
+396073 → Spinservers
+
+39618 → HostCram
+
+398478 → HostDare
+
+399077 → Jtti
+
+399606 → HMBCloud (半月湾)
+
+46783 → VMRack
+
+51089 → SaltyFish (咸鱼云)
+
+135936 → Lisahost (丽萨主机)
+
+399158 → PowerHost
+
+979 → NetLab Global / A400互联
+
+983 → WikiHost (微基主机)
+
+8888 → V.PS (悉尼)
+
+9371 → SAKURA
+
+35916 → CloudCone
+
+36352 → RackNerd
+
+41378 → CloudSilk (白丝云)
+
+62240 → Clouvider
+
+132205 → 莱卡云
+
+132839 → KUXUEYUN
+
+204083 → 666Clouds
+
+328663 → 云途 (yt.net)
+
+400618 → NovixLink
+
+147314 → CloudPower（日本软银优化）
+
+398822 → GreenCloudVPS（亚太优化含CMI/CN2）
+
+20473 → Vultr（可开CN2 GIA实例）
+
+63949 → Linode（优化实例）
+
+45102 → 阿里云国际（香港CN2）
+
+37963 → 腾讯云国际（香港CN2）
+
+132203 → M1M Net（韩国优化）
+
+151188 → 1Gbits（立陶宛，CN2 GIA/9929）
+
+59371 → HostMayo（洛杉矶CN2 GIA）
+
+142111 → 艾云 (iaclouds)
+
+1054 → taphip
+
+49304 → 100TB.io
+
+134677 → OrangeVPS
+
+9269 → HKBN (香港宽频)
+
+4658 → Netfront (香港CN2)
+
+3786 → LG Uplus (韩国LG优化)
+
+10069 → 青怡云 (YouthIDC)
+
+17179 → 雨云 (香港CN2 GIA)
+
+138195 → HostKVM (香港CN2优化)
+
+139646 → LightLayer (菲律宾/圣何塞优化线路)
+
+137443 → TmhHost (美国CN2 GIA)
+
+400342 → edgeNAT (第二个ASN，美国4837优化)
+
+139698 → FastCatServer (美国洛杉矶CN2 GIA)
+
+134330 → 酷酷云 (广州AS9929)
+
+135450 → 华海云 (美国AS4837/9929)
+
+58629 → 第一云 (香港CN2/CMI)
+
+9294 → 6yun (香港CN2)
+
+39433 → Voline (法国/香港CN2 GIA)
+
+139659 → G-Core (韩国CN2)
+
+140720 → AnyunVM (早安云)
+
+149031 → 奇云 (美国优化)
+
+134227 → 酷盾云 (香港三网直连)
+
+138697 → HKT (香港电讯优化)
+
+135392 → 指间云 (美国CN2 GIA)
+
+9268 → OverTheWire (澳洲9929优化)
+
+133300 → Yokozuna (日本软银优化)
+
+139997 → SpeedPage (香港CMI直连)
+
+138870 → KoalaVPS (新加坡三网优化)
+
+23764 → 华逸云 (香港CN2)
+
+134763 → 一诺网络 (香港优质线路)
+
+142403 → VirMach (优化线路)
+
+149172 → Wepc (第二个ASN)
+
+151106 → HighSpeedHosting (CN2/9929)
+
+152742 → Mondoze (移动CMI直连)
+
+399672 → WebSound (CN2 GIA/9929)
+
+147002 → Vmshell（香港 CMI, 美国 CN2 GIA）
+
+199524 → BageVM
+
+203090 → BitsFlow (香港/美国优化)
+
+148717 → VollCloud (香港CMI)
+
+210188 → ACEBGP (美国9929/CMIN2)
+
+58780 → HostYun (香港/美国CN2)
+
+138915 → SA-Internet（香港本土商家，提供香港 CUG/CMI/CN2 优化线路）
+
+21859 → Zenlayer（全球多地区CN2/优化线路）
+
+35908 → Krypt（美国CN2 GIA）
+
+18450 → WebNX（洛杉矶优化线路）
+
+8100 → QuadraNet（洛杉矶CN2/优化）
+
+57695 → Misaka Network（全球Anycast优化）
+
+139021 → Akkocloud（香港/美国CN2 GIA）
+
+139057 → UCloud（香港/美国优化）
+
+4809 → China Telecom CN2（骨干网络）
+
+23724 → IDC Cloud（香港CN2）
+
+38008 → Aperture Science（日本软银/CN2）
+
+131199 → Nexet（香港CMI）
+
+133111 → CloudRadium（香港/美国CN2）
+
+140726 → UniCloud（香港三网优化）
+
+152558 → 99Cloud（香港CN2 GIA）
+
+138611 → Cloudie Networks（注意与55933不同ASN）
+
+136800 → ITLDC（香港/新加坡优化）
+
+62904 → Eonix（美国优化）
+
+54203 → NetLab（注意与979不同ASN）
+
+61317 → HOSTODO（美国优化）
+
+203106 → AoyouHost（日本软银/CN2）
+
+394483 → MaxKVM（美国CN2 GIA）
+
+140317 → Nebula（香港CMI）
+
+136583 → CloudInnovation（南非CN2/优化）
+
+7725 → CeRaNetworks（美国 CN2 GIA/高防优化）
+
+40065 → CNServers（美国 CN2 GIA/高防/9929）
+
+136557 → HostUS（香港/美国 CN2 GIA 优化）
+
+138968 → Cloudie Limited（香港 CN2/优化，同公司另一ASN）
+
+53767 → BuyVM（美国 CN2 GIA/9929 优化可选）
+
+199707 → xTom（日本软银/CN2，xTom 另一ASN）
+
+202422 → G-Core Labs（欧洲/亚洲 CN2，多区域优化）
+
+150173 → ServerHub（美国优化线路）
+
+203727 → Hostigger（美国/欧洲优化线路）
+
+205794 → xTom（德国/日本 CN2/软银优化，另一个ASN）
+
+58453 → 中国移动国际 (CMI)
+
+10099 → 中国联通国际 (CUII)
+
+25820 → BandwagonHost / IT7 Networks (美国 CN2 GIA/日本软银/香港 CN2)
+
+63473 → HostHatch (亚洲优化/香港、新加坡等)
+
+142032 → Yisu Cloud (易速云) (香港 CN2/美国优化)
+
+137688 → DogYun (狗云) 香港CN2 GIA/日本软银/美国CN2 GIA
+
+138415 → Moack (摩卡云) 香港CN2 GIA
+
+139242 → 企鹅小屋 (Qexw) 香港/美国CN2 GIA
+
+137680 → Kdatacenter 韩国CN2优化
+
+138538 → 野草云 (Yecaoyun) 香港CN2/CMI优化
+
+38478 → SunnyVision 香港CN2
+
+55967 → 百度云国际 香港/新加坡优化
+
+149514 → WebHorizon 新加坡/日本CN2/软银优化
+
+138161 → HKServerworks 香港CN2
+
+136907 → 华为云国际 香港/新加坡CN2优化
+
+59019 → 金山云国际 香港CN2优化
+
+server=="cloudflare" && port=="443" && header="Forbidden" && asn="400618" && is_domain="false"
+
+host.services.port = 443 
+AND host.services.endpoints.http.status_code = "403" 
+AND host.services.endpoints.http.headers: (key = "Server" AND value: "cloudflare") 
+AND host.autonomous_system.asn = 399158
