@@ -2,6 +2,7 @@ import ipaddress
 import re
 import socket
 import ssl
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
@@ -79,6 +80,39 @@ def create_tls_connection(
     return tls_sock
 
 
+def probe_verified_tls(ip: str, server_name: str) -> bool:
+    """使用 server_name 作为 SNI 握手，并校验证书链及主机名。"""
+    try:
+        with create_tls_connection(ip, server_name, verify_certificate=True):
+            return True
+    except (OSError, ssl.SSLError, ValueError):
+        return False
+
+
+def scan_batch(
+    probe: Callable[[str], bool],
+    ip_list: list[str],
+    max_workers: int,
+    log_template: str,
+) -> list[str]:
+    """并发执行 probe，返回探测通过的 IP；log_template 的 {ip} 为命中 IP。"""
+    valid_ips = []
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(probe, ip): ip for ip in ip_list}
+
+        for future in as_completed(futures):
+            ip = futures[future]
+            try:
+                if future.result():
+                    valid_ips.append(ip)
+                    print(log_template.format(ip=ip))
+            except Exception:
+                pass
+
+    return valid_ips
+
+
 # ========================= 第一步：TCP 443 探测 =========================
 
 
@@ -93,24 +127,9 @@ def probe_tcp_443(ip: str) -> bool:
 
 def scan_tcp_batch(ip_list: list[str]) -> list[str]:
     """并发执行 TCP 443 探测，返回 443 端口可连接的 IP。"""
-    tcp_ips = []
-
-    with ThreadPoolExecutor(max_workers=TCP_MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(probe_tcp_443, ip): ip
-            for ip in ip_list
-        }
-
-        for future in as_completed(futures):
-            ip = futures[future]
-            try:
-                if future.result():
-                    tcp_ips.append(ip)
-                    print(f"[TCP 443] 端口开放: {ip}")
-            except Exception:
-                pass
-
-    return tcp_ips
+    return scan_batch(
+        probe_tcp_443, ip_list, TCP_MAX_WORKERS, "[TCP 443] 端口开放: {ip}"
+    )
 
 
 # ========================= 第二步：TLS 探测 =========================
@@ -118,33 +137,12 @@ def scan_tcp_batch(ip_list: list[str]) -> list[str]:
 
 def probe_tls(ip: str) -> bool:
     """通过 TCP + TLS 探测 IP，并检查 www.cloudflare.com 的证书。"""
-    try:
-        with create_tls_connection(ip, TLS_DOMAIN, verify_certificate=True):
-            return True
-    except (OSError, ssl.SSLError, ValueError):
-        return False
+    return probe_verified_tls(ip, TLS_DOMAIN)
 
 
 def scan_tls_batch(ip_list: list[str]) -> list[str]:
     """并发执行第二步，返回 TLS 证书探测通过的 IP。"""
-    tls_ips = []
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(probe_tls, ip): ip
-            for ip in ip_list
-        }
-
-        for future in as_completed(futures):
-            ip = futures[future]
-            try:
-                if future.result():
-                    tls_ips.append(ip)
-                    print(f"[TLS] 保留 IP: {ip}")
-            except Exception:
-                pass
-
-    return tls_ips
+    return scan_batch(probe_tls, ip_list, MAX_WORKERS, "[TLS] 保留 IP: {ip}")
 
 
 # ========================= 第三步：HTTP 301 验证 =========================
@@ -181,58 +179,27 @@ def probe_http_301(ip: str) -> bool:
 
 def scan_http_batch(tls_ips: list[str]) -> list[str]:
     """并发执行第三步，返回 HTTP 状态码为 301 的有效 IP。"""
-    valid_ips = []
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(probe_http_301, ip): ip
-            for ip in tls_ips
-        }
-
-        for future in as_completed(futures):
-            ip = futures[future]
-            try:
-                if future.result():
-                    valid_ips.append(ip)
-                    print(f"[HTTP 301] 有效 IP: {ip}")
-            except Exception:
-                pass
-
-    return valid_ips
+    return scan_batch(
+        probe_http_301, tls_ips, MAX_WORKERS, "[HTTP 301] 有效 IP: {ip}"
+    )
 
 
-# ========================= 第四步：自定义域名证书验证 =========================
+# ========================= 第四步：自定义域名验证 =========================
 
 
 def probe_custom_domain(ip: str) -> bool:
     """使用自定义域名作为 TLS SNI，确认返回证书包含该域名。"""
-    try:
-        with create_tls_connection(ip, CUSTOM_DOMAIN, verify_certificate=True):
-            return True
-    except (OSError, ssl.SSLError, ValueError):
-        return False
+    return probe_verified_tls(ip, CUSTOM_DOMAIN)
 
 
 def scan_custom_domain_batch(http_ips: list[str]) -> list[str]:
     """并发执行第四步，返回证书匹配自定义域名的 IP。"""
-    valid_ips = []
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(probe_custom_domain, ip): ip
-            for ip in http_ips
-        }
-
-        for future in as_completed(futures):
-            ip = futures[future]
-            try:
-                if future.result():
-                    valid_ips.append(ip)
-                    print(f"[CUSTOM TLS] 证书匹配 {CUSTOM_DOMAIN}: {ip}")
-            except Exception:
-                pass
-
-    return valid_ips
+    return scan_batch(
+        probe_custom_domain,
+        http_ips,
+        MAX_WORKERS,
+        f"[CUSTOM TLS] 证书匹配 {CUSTOM_DOMAIN}: {{ip}}",
+    )
 
 
 # ========================= 第五步：保存有效 IP =========================
@@ -262,7 +229,7 @@ def main() -> None:
     tls_ips = scan_tls_batch(tcp_ips)
     print(f"第二步完成，保留 {len(tls_ips)} 个 IP。")
 
-    # 第三步：TLS SNI 和 HTTP Host 均使用 crypto.cloudflare.com，严格要求返回 301。
+    # 第三步：TLS SNI 和 HTTP Host 均用 crypto.cloudflare.com，要求返回 301。
     http_ips = scan_http_batch(tls_ips)
     print(f"第三步完成，得到 {len(http_ips)} 个 IP。")
 
