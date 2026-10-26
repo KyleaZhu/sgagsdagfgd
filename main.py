@@ -1,9 +1,7 @@
 import ipaddress
-import os
 import re
 import socket
 import ssl
-import tempfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
@@ -59,11 +57,16 @@ def create_tls_connection(
     ip: str,
     server_name: str,
     timeout: float = TIMEOUT,
+    *,
+    verify_certificate: bool = False,
 ) -> ssl.SSLSocket:
-    """连接 IP:443 并完成 TLS 握手。"""
+    """连接 IP:443；可选校验证书链及 SNI 主机名（支持通配符 SAN）。"""
     context = ssl.create_default_context()
-    context.check_hostname = False
-    context.verify_mode = ssl.CERT_NONE
+    if verify_certificate:
+        context.hostname_checks_common_name = False
+    else:
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
 
     sock = socket.create_connection((ip, 443), timeout=timeout)
     try:
@@ -116,10 +119,9 @@ def scan_tcp_batch(ip_list: list[str]) -> list[str]:
 def probe_tls(ip: str) -> bool:
     """通过 TCP + TLS 探测 IP，并检查 www.cloudflare.com 的证书。"""
     try:
-        with create_tls_connection(ip, TLS_DOMAIN) as tls_sock:
-            certificate = tls_sock.getpeercert(binary_form=True)
-            return bool(certificate and b"cloudflare" in certificate.lower())
-    except (OSError, ssl.SSLError):
+        with create_tls_connection(ip, TLS_DOMAIN, verify_certificate=True):
+            return True
+    except (OSError, ssl.SSLError, ValueError):
         return False
 
 
@@ -202,45 +204,11 @@ def scan_http_batch(tls_ips: list[str]) -> list[str]:
 # ========================= 第四步：自定义域名证书验证 =========================
 
 
-def certificate_matches_custom_domain(tls_sock: ssl.SSLSocket) -> bool:
-    """检查 TLS 返回证书的 CN 或 SAN 是否包含自定义域名。"""
-    certificate = tls_sock.getpeercert(binary_form=True)
-    if not certificate:
-        return False
-
-    certificate_file = tempfile.NamedTemporaryFile(
-        mode="w",
-        suffix=".pem",
-        encoding="ascii",
-        delete=False,
-    )
-    try:
-        certificate_file.write(ssl.DER_cert_to_PEM_cert(certificate))
-        certificate_file.close()
-        decoded = ssl._ssl._test_decode_cert(certificate_file.name)
-    finally:
-        certificate_file.close()
-        os.unlink(certificate_file.name)
-
-    names = {
-        value.lower()
-        for name, value in decoded.get("subjectAltName", ())
-        if name == "DNS"
-    }
-    names.update(
-        value.lower()
-        for group in decoded.get("subject", ())
-        for name, value in group
-        if name == "commonName"
-    )
-    return CUSTOM_DOMAIN.lower() in names
-
-
 def probe_custom_domain(ip: str) -> bool:
     """使用自定义域名作为 TLS SNI，确认返回证书包含该域名。"""
     try:
-        with create_tls_connection(ip, CUSTOM_DOMAIN) as tls_sock:
-            return certificate_matches_custom_domain(tls_sock)
+        with create_tls_connection(ip, CUSTOM_DOMAIN, verify_certificate=True):
+            return True
     except (OSError, ssl.SSLError, ValueError):
         return False
 
