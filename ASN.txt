@@ -1,13 +1,3 @@
-906 → DMIT
-
-54574 → DMIT
-
-3214 → xTom (V.PS)
-
-134520 → GigsGigsCloud
-
-400464 → VMISS
-
 55933 → Cloudie
 
 46844 → Sharktech
@@ -311,10 +301,3 @@
 136907 → 华为云国际 香港/新加坡CN2优化
 
 59019 → 金山云国际 香港CN2优化
-
-server=="cloudflare" && port=="443" && header="Forbidden" && asn="400618" && is_domain="false"
-
-host.services.port = 443 
-AND host.services.endpoints.http.status_code = "403" 
-AND host.services.endpoints.http.headers: (key = "Server" AND value: "cloudflare") 
-AND host.autonomous_system.asn = 399158
